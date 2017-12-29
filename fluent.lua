@@ -57,18 +57,23 @@ function this.instance()
 		return instance
 	end
 
+	function instance.as(as)
+		instance.current = as
+		return instance
+	end
+	
 	-- Terminal functions
 
-	function instance.get(as)
-		return instance.h[as]
+	function instance.get()
+		return instance.h[instance.current]
 	end
 
-	function instance.first(as)
-		return instance.h[as][1]
+	function instance.first()
+		return instance.h[instance.current][1]
 	end
 
-	function instance.at(as, i)
-		return instance.h[as][i]
+	function instance.nth(i)
+		return instance.h[instance.current][i]
 	end
 
 	function instance.reset()

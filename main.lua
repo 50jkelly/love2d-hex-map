@@ -17,24 +17,25 @@ function love.draw()
 	-- Obtain the mouse position and find the currently hovered hex
 
 	local mouse_x, mouse_y = love.mouse.getPosition()
-	local mouse_hex = fluent.instance().at_mouse(mouse_x, mouse_y)
+	local mouse_hex = fluent.instance().at_mouse(mouse_x, mouse_y).as('axial').first()
 
 	-- Draw the hexes
 
-	for i, _ in ipairs(grid.get('axial')) do
-		local position = grid.at('pixel', i)
+	for i, _ in ipairs(grid.as('axial').get()) do
+		local current_hex = grid.as('axial').nth(i)
+		local current_hex_position = grid.as('pixel').nth(i)
 
-		if (grid.at('axial', i).q == mouse_hex.first('axial').q and grid.at('axial', i).r == mouse_hex.first('axial').r) then
+		if (current_hex.q == mouse_hex.q and current_hex.r == mouse_hex.r) then -- Create an equals function for here
 			love.graphics.setColor(0,0,255)
 		else
 			love.graphics.setColor(255,255,255)
 		end
 
-		love.graphics.draw(hex_image, position.x - fluent.get_size(), position.y - fluent.get_size())
+		love.graphics.draw(hex_image, current_hex_position.x - fluent.get_size(), current_hex_position.y - fluent.get_size())
 	end
 
 	love.graphics.setColor(255,0,0)
 	love.graphics.circle('fill', mouse_x, mouse_y, 3)
-	love.graphics.print(mouse_hex.first('axial').q .. ',' .. mouse_hex.first('axial').r, 400, 20)
+	love.graphics.print(mouse_hex.q .. ',' .. mouse_hex.r, 400, 20)
 end
 
