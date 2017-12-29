@@ -76,6 +76,12 @@ function this.axial_to_pixel(hex)
   point.y = size * 3/2 * hex.r
   return point
 end
+
+function this.cube_to_pixel(cube)
+	local hex = this.cube_to_axial(cube)
+	return this.axial_to_pixel(hex)
+end
+
 -- Conversion between coordinate systems
 
 function this.cube_to_axial(cube)
@@ -108,7 +114,7 @@ function this.offset_to_cube(offset)
   return cube
 end
 
--- Get coordinates of neighbouring hex
+-- Get coordinates of neighboring hex
 
 function this.get_cube_neighbour(cube, direction)
   local directions = {}
@@ -232,7 +238,6 @@ function this.get_axial_line(a, b)
   
   return results
 end
-
 
 -- Return the grid coordinates of the given pixel position
 

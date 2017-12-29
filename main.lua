@@ -1,46 +1,40 @@
-local grid = require 'grid'
+local fluent = require 'fluent'
 
 local hex_image
 
 function love.load()
-  hex_image = love.graphics.newImage('HK-Fantasyland/HK - Blank/HK_blank_003.png')
-  love.window.setMode(800, 600, { resizable=true })
-  love.window.maximize()
+	hex_image = love.graphics.newImage('HK-Fantasyland/HK - Blank/HK_blank_003.png')
+	fluent.set_size(95)
+	love.window.setMode(800, 600, { resizable=true })
+	love.window.maximize()
 end
 
 function love.draw()
-  local h = {}
+	-- Create a table of hexes in the given coordinate range
   
-  for i = 1, 5 do
-    for j = 1, 5 do
-      local offset = {}
-      offset.row = i
-      offset.col = j
-      
-      local new_cube = grid.offset_to_cube(offset)
-      table.insert(h, grid.cube_to_axial(new_cube))
-    end
-  end
-    
-  grid.set_size(95)
-  
-  local mouse_x, mouse_y = love.mouse.getPosition()
-  local mouse_hex = grid.pixel_to_axial(mouse_x, mouse_y)
-  
-  for i, e in ipairs(h) do
-    local position = grid.axial_to_pixel(e)
-    
-    if (e.q == mouse_hex.q and e.r == mouse_hex.r) then
-      love.graphics.setColor(0,0,255)
-    else
-      love.graphics.setColor(255,255,255)
-    end
-  
-    love.graphics.draw(hex_image, position.x - grid.get_size(), position.y - grid.get_size())
-  end
-  
-  love.graphics.setColor(255,0,0)
-  love.graphics.circle('fill', mouse_x, mouse_y, 3)
-  love.graphics.print(mouse_hex.q .. ',' .. mouse_hex.r, 400, 20)
+	local grid = fluent.instance().from(1, 1).to(5, 5)
+
+	-- Obtain the mouse position and find the currently hovered hex
+
+	local mouse_x, mouse_y = love.mouse.getPosition()
+	local mouse_hex = fluent.instance().at_mouse(mouse_x, mouse_y)
+
+	-- Draw the hexes
+
+	for i, _ in ipairs(grid.get('axial')) do
+		local position = grid.at('pixel', i)
+
+		if (grid.at('axial', i).q == mouse_hex.first('axial').q and grid.at('axial', i).r == mouse_hex.first('axial').r) then
+			love.graphics.setColor(0,0,255)
+		else
+			love.graphics.setColor(255,255,255)
+		end
+
+		love.graphics.draw(hex_image, position.x - fluent.get_size(), position.y - fluent.get_size())
+	end
+
+	love.graphics.setColor(255,0,0)
+	love.graphics.circle('fill', mouse_x, mouse_y, 3)
+	love.graphics.print(mouse_hex.first('axial').q .. ',' .. mouse_hex.first('axial').r, 400, 20)
 end
 
