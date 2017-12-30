@@ -106,6 +106,11 @@ function this.cube_to_offset(cube)
   return offset
 end
 
+function this.axial_to_offset(hex)
+	local cube = this.axial_to_cube(hex)
+	return this.cube_to_offset(cube)
+end
+
 function this.offset_to_cube(offset)
   local cube = {}
   cube.x = offset.col - (offset.row - math.abs(offset.row) % 2) / 2

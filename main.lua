@@ -17,7 +17,7 @@ function love.draw()
 	-- Obtain the mouse position and find the currently hovered hex
 
 	local mouse_x, mouse_y = love.mouse.getPosition()
-	local mouse_hex = fluent.instance().at_mouse(mouse_x, mouse_y).first().as('axial')
+	local mouse_hex = fluent.instance().at_mouse(mouse_x, mouse_y).first().as('offset')
 
 	-- Draw the hexes
 
@@ -33,6 +33,6 @@ function love.draw()
 
 	love.graphics.setColor(255,0,0)
 	love.graphics.circle('fill', mouse_x, mouse_y, 3)
-	love.graphics.print(mouse_hex.get().q .. ',' .. mouse_hex.get().r, 400, 20)
+	love.graphics.print(mouse_hex.get().col .. ',' .. mouse_hex.get().row, 400, 20)
 end
 

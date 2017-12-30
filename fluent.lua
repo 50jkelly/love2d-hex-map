@@ -34,14 +34,15 @@ function this.instance()
 		for x = instance.startX, instance.endX do
 			for y = instance.startY, instance.endY do
 				local offset = {}
-				offset.row = x
-				offset.col = y
+				offset.row = y
+				offset.col = x
 				
 				local cube = grid.offset_to_cube(offset)
 				
 				table.insert(h.cube, cube)
 				table.insert(h.axial, grid.cube_to_axial(cube))
 				table.insert(h.pixel, grid.cube_to_pixel(cube))
+				table.insert(h.offset, grid.cube_to_offset(cube))
 			end
 		end
 		
@@ -56,6 +57,7 @@ function this.instance()
 		table.insert(h.axial, axial)
 		table.insert(h.cube, grid.axial_to_cube(axial))
 		table.insert(h.pixel, grid.axial_to_pixel(axial))
+		table.insert(h.offset, grid.axial_to_offset(axial))
 		
 		return instance
 	end
@@ -116,6 +118,7 @@ function this.instance()
 		h.axial = {}
 		h.pixel = {}
 		h.cube = {}
+		h.offset = {}
 	end
 	
 	function instance.draw_position()
