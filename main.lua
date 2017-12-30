@@ -17,25 +17,22 @@ function love.draw()
 	-- Obtain the mouse position and find the currently hovered hex
 
 	local mouse_x, mouse_y = love.mouse.getPosition()
-	local mouse_hex = fluent.instance().at_mouse(mouse_x, mouse_y).as('axial').first()
+	local mouse_hex = fluent.instance().at_mouse(mouse_x, mouse_y).first().as('axial')
 
 	-- Draw the hexes
 
-	for i, _ in ipairs(grid.as('axial').get()) do
-		local current_hex = grid.as('axial').nth(i)
-		local current_hex_position = grid.as('pixel').nth(i)
-
-		if (current_hex.q == mouse_hex.q and current_hex.r == mouse_hex.r) then -- Create an equals function for here
+	grid.for_each(function()
+		if (grid.equals(mouse_hex)) then
 			love.graphics.setColor(0,0,255)
 		else
 			love.graphics.setColor(255,255,255)
 		end
 
-		love.graphics.draw(hex_image, current_hex_position.x - fluent.get_size(), current_hex_position.y - fluent.get_size())
-	end
+		love.graphics.draw(hex_image, grid.draw_position())
+	end)
 
 	love.graphics.setColor(255,0,0)
 	love.graphics.circle('fill', mouse_x, mouse_y, 3)
-	love.graphics.print(mouse_hex.q .. ',' .. mouse_hex.r, 400, 20)
+	love.graphics.print(mouse_hex.get().q .. ',' .. mouse_hex.get().r, 400, 20)
 end
 
